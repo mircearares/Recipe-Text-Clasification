@@ -107,8 +107,8 @@ def tf_idf(train, test, cuisines):
 
     prediction(tfidf_train, tfidf_test, train['cuisine'], cuisines)
 
-    # print_plot(tfidf_train, "UMAP", train['cuisine'], "TF-IDF")
-    # print_plot(tfidf_train, "TSNE", train['cuisine'], "TF-IDF")
+    print_plot(tfidf_train, "UMAP", train['cuisine'], "TF-IDF")
+    print_plot(tfidf_train, "TSNE", train['cuisine'], "TF-IDF")
 
 
 def bag_of_words(train, test, cuisines):
@@ -123,8 +123,8 @@ def bag_of_words(train, test, cuisines):
 
     prediction(bow_train, bow_test, train['cuisine'], cuisines)
 
-    # print_plot(bow_train, "UMAP", train['cuisine'], "Bag-Of-Words")
-    # print_plot(bow_train, "TSNE", train['cuisine'], "Bag-Of-Words")
+    print_plot(bow_train, "UMAP", train['cuisine'], "Bag-Of-Words")
+    print_plot(bow_train, "TSNE", train['cuisine'], "Bag-Of-Words")
 
 
 def word_2_vec(train, test, cuisines):
@@ -144,8 +144,8 @@ def word_2_vec(train, test, cuisines):
 
     prediction(w2v_train, w2v_test, train['cuisine'], cuisines)
 
-    # print_plot(w2v_train, "UMAP", train['cuisine'], "Word-2-Vec")
-    # print_plot(w2v_train, "TSNE", train['cuisine'], "Word-2-Vec")
+    print_plot(w2v_train, "UMAP", train['cuisine'], "Word-2-Vec")
+    print_plot(w2v_train, "TSNE", train['cuisine'], "Word-2-Vec")
 
 
 if __name__ == "__main__":
