@@ -115,66 +115,62 @@ def prediction(train, test, classes, test_cuisines, extractor):
         bootstrap = False
         min_samples_leaf = 1
 
-    # classifier_svc = LinearSVC(C=svc_c)
-    # classifier_svc.fit(train, classes)
-    # prediction_svc = classifier_svc.predict(test)
-    #
-    # accuracies['Linear_SVC'] = compute_accuracy(prediction_svc, test_cuisines)
-    #
-    # classifier_regr = LogisticRegression(C=regression_c)
-    # classifier_regr.fit(train, classes)
-    # prediction_regr = classifier_regr.predict(test)
-    #
-    # accuracies['Logistic_Regression'] = compute_accuracy(prediction_regr, test_cuisines)
+    classifier_svc = LinearSVC(C=svc_c)
+    classifier_svc.fit(train, classes)
+    prediction_svc = classifier_svc.predict(test)
 
+    accuracies['Linear_SVC'] = compute_accuracy(prediction_svc, test_cuisines)
 
+    classifier_regr = LogisticRegression(C=regression_c)
+    classifier_regr.fit(train, classes)
+    prediction_regr = classifier_regr.predict(test)
 
-    # Number of trees in random forest
-    n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=10)]
-    # Number of features to consider at every split
-    max_features = ['auto', 'sqrt']
-    # Maximum number of levels in tree
-    max_depth = [int(x) for x in np.linspace(10, 110, num=11)]
-    max_depth.append(None)
-    # Minimum number of samples required to split a node
-    min_samples_split = [2, 5, 10]
-    # Minimum number of samples required at each leaf node
-    min_samples_leaf = [1, 2, 4]
-    # Method of selecting samples for training each tree
-    bootstrap = [True, False]
-    # Create the random grid
-    random_grid = {'n_estimators': n_estimators,
-                   'max_features': max_features,
-                   'max_depth': max_depth,
-                   'min_samples_split': min_samples_split,
-                   'min_samples_leaf': min_samples_leaf,
-                   'bootstrap': bootstrap}
+    accuracies['Logistic_Regression'] = compute_accuracy(prediction_regr, test_cuisines)
 
-    rf = RandomForestClassifier()
-    rf_random = RandomizedSearchCV(estimator=rf, param_distributions=random_grid, n_iter=100, cv=3, verbose=2,
-                                   random_state=42, n_jobs=-1)
-    rf_random.fit(train, classes)
-    print(rf_random.best_params_)
-
-    # classfier_rf = RandomForestClassifier(min_samples_split=min_samples_split,
-    #                                       n_estimators=n_estimators,
-    #                                       max_depth=max_depth,
-    #                                       max_features=max_features,
-    #                                       bootstrap=bootstrap,
-    #                                       min_samples_leaf=min_samples_leaf)
+    # # Number of trees in random forest
+    # n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=10)]
+    # # Number of features to consider at every split
+    # max_features = ['auto', 'sqrt']
+    # # Maximum number of levels in tree
+    # max_depth = [int(x) for x in np.linspace(10, 110, num=11)]
+    # max_depth.append(None)
+    # # Minimum number of samples required to split a node
+    # min_samples_split = [2, 5, 10]
+    # # Minimum number of samples required at each leaf node
+    # min_samples_leaf = [1, 2, 4]
+    # # Method of selecting samples for training each tree
+    # bootstrap = [True, False]
+    # # Create the random grid
+    # random_grid = {'n_estimators': n_estimators,
+    #                'max_features': max_features,
+    #                'max_depth': max_depth,
+    #                'min_samples_split': min_samples_split,
+    #                'min_samples_leaf': min_samples_leaf,
+    #                'bootstrap': bootstrap}
     #
-    # # e
-    # #    print(rf_random.best_params_)
-    # classfier_rf.fit(train, classes)
-    # prediction_rf = classfier_rf.predict(test)
-    #
-    # accuracies['Random Forrest'] = compute_accuracy(prediction_rf, test_cuisines)
-    #
-    # accuracy_file = open("accuracies.txt", "w+")
-    # for classfier, accuracy in accuracies.items():
-    #     print("{} : {}%".format(classfier, round(accuracy, 2)))
-    #     accuracy_file.write("{} : {}%\n".format(classfier, round(accuracy, 2)))
-    # accuracy_file.write("\n")
+    # rf = RandomForestClassifier()
+    # rf_random = RandomizedSearchCV(estimator=rf, param_distributions=random_grid, n_iter=100, cv=3, verbose=2,
+    #                                random_state=42, n_jobs=-1)
+    # rf_random.fit(train, classes)
+    # print(rf_random.best_params_)
+
+    classfier_rf = RandomForestClassifier(min_samples_split=min_samples_split,
+                                          n_estimators=n_estimators,
+                                          max_depth=max_depth,
+                                          max_features=max_features,
+                                          bootstrap=bootstrap,
+                                          min_samples_leaf=min_samples_leaf)
+
+    classfier_rf.fit(train, classes)
+    prediction_rf = classfier_rf.predict(test)
+
+    accuracies['Random Forrest'] = compute_accuracy(prediction_rf, test_cuisines)
+
+    accuracy_file = open("accuracies.txt", "w+")
+    for classfier, accuracy in accuracies.items():
+        print("{} : {}%".format(classfier, round(accuracy, 2)))
+        accuracy_file.write("{} : {}%\n".format(classfier, round(accuracy, 2)))
+    accuracy_file.write("\n")
 
 
 def tf_idf(train, test, cuisines):
@@ -266,8 +262,8 @@ def word_2_vec(train, test, cuisines):
 
     prediction(w2v_train, w2v_test, train['cuisine'], cuisines, "W2V")
 
-    # print_plot(w2v_train, "UMAP", train['cuisine'], "Word-2-Vec")
-    # print_plot(w2v_train, "TSNE", train['cuisine'], "Word-2-Vec")
+    print_plot(w2v_train, "UMAP", train['cuisine'], "Word-2-Vec")
+    print_plot(w2v_train, "TSNE", train['cuisine'], "Word-2-Vec")
 
 
 if __name__ == "__main__":
